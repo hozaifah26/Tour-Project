@@ -1,7 +1,14 @@
-# Dockerfile - Apache + PHP
-FROM php:8.1-apache
-RUN a2enmod rewrite
-COPY . /var/www/html/
-WORKDIR /var/www/html/
+# Use official Nginx as base
+FROM nginx:alpine
+
+# Remove default nginx website
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy your frontend files into nginx html folder
+COPY . /usr/share/nginx/html
+
+# Expose port 80
 EXPOSE 80
-CMD ["apache2-foreground"]
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
